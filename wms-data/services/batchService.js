@@ -3,17 +3,14 @@ mongoose = dbContext.getConnection();
 const debug_controller = require('debug')('app:service.batch');
 
 function BatchService() {
-
-
-
     this.getAll = async function () {
         debug_controller('Request getAll');
         return await dbContext.Batch
             .find();
-            
-
     }
     this.createBatch = async function (body) {
+
+        // check if already exist=?
 
         const _batch = new dbContext.Batch({
             code: body.code ,
@@ -29,6 +26,23 @@ function BatchService() {
         
         return await _batch.save();
     }
+
+    this.getById = async function (id) {
+        debug_controller('Request getById: ' + id );
+        return await dbContext.Batch
+            .findOne({_id: id });
+    }
+    this.getByCode = async function (code) {
+        debug_controller('Request getById: ' + code );
+        return await dbContext.Batch
+            .find({code: code });
+    }
+    this.getByProductCode = async function (_productCode) {
+        debug_controller('Request getByProduct: ' + _productCode );
+        return await dbContext.Batch
+            .find({productCode: _productCode });
+    }
+
 
 }
 module.exports = new BatchService();
