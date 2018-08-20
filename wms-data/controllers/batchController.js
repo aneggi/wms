@@ -27,6 +27,26 @@ router.get('/:id', (req,res) => {
         });
 });
 
+router.get('/unlock/:id', (req,res) => {
+    debug_controller('Request unlock: '+ req.params.id);
+    batchService.unblock(req.params.id)
+        .then ((result) => {
+            res.send(result);
+        }).catch((err) => {
+            return res.status(400).send('Server error: ' + err.message);
+        });
+});
+
+router.get('/block/:id', (req,res) => {
+    debug_controller('Request block: '+ req.params.id);
+    batchService.block(req.params.id)
+        .then ((result) => {
+            res.send(result);
+        }).catch((err) => {
+            return res.status(400).send('Server error: ' + err.message);
+        });
+});
+
 router.get('/byCode/:code', (req,res) => {
     debug_controller('Request getByCode: '+ req.params.code);
     batchService.getByCode(req.params.code)

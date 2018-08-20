@@ -42,6 +42,26 @@ function BatchService() {
         return await dbContext.Batch
             .find({productCode: _productCode });
     }
+    this.unblock = async function (id) {
+        debug_controller('Request unlock: ' + id );
+        const _batch = await dbContext.Batch
+            .findOne({_id: id });
+        debug_controller('Find batch: ' + _batch );
+        if(!_batch) return ;
+        _batch.status = 'ready';            
+        return await _batch.save();
+
+    }
+    this.block = async function (id) {
+        debug_controller('Request Block: ' + id );
+        const _batch = await dbContext.Batch
+            .findOne({_id: id });
+        debug_controller('Find batch: ' + _batch );
+        if(!_batch) return ;
+        _batch.status = 'block';            
+        return await _batch.save();
+
+    }
 
 
 }
