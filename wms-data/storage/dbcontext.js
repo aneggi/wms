@@ -9,10 +9,10 @@ const containerSchema = new mongoose.Schema({
     DataCreation : { type: Date, default: Date.now},
     isPartial: {type: Boolean, default : false},
     containerItems: [
-        {
+        {   // denormalization -> performance
             boxCode : String,
             unityQty: Number,
-            _productBatch : mongoose.Schema.Types.ObjectId   //String , //da verificare*********************GUID
+            _productBatch : { type: mongoose.Schema.Types.ObjectId, ref: 'Batch' }  //String , //da verificare*********************GUID - normalization -> consisenty
         }
     ]
 });
@@ -22,7 +22,7 @@ const batchSchema = new mongoose.Schema({
     expireData : Date,
     productCode: String,
     productDescription: String,
-    status: { type: String, default: 'blocked' },
+    status: { type: String, default: 'locked', enum: ['locked','ready','waiting'] },
     qtyPerBox: Number,
     unitOfMeasurement: String
 });
